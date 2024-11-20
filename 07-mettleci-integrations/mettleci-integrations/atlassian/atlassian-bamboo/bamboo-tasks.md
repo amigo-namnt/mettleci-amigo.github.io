@@ -1,0 +1,23 @@
+# Bamboo Tasks
+
+MettleCI includes an array of Tasks that can be used within your Bamboo Plans and Deployments.  MettleCI's build and deployment tasks are delivered as Bamboo Plugins and are described below.  Please refer to the [https://datamigrators.atlassian.net/wiki/spaces/MCIDOC/pages/264110081](https://datamigrators.atlassian.net/wiki/spaces/MCIDOC/pages/264110081) section for recommendations about how these can be used to support specific processes.
+
+| Task Name | Plugin Name | YAML Reference | Description |
+| --- | --- | --- | --- |
+| [Bamboo Build Commit Log Task](/wiki/spaces/MCIDOC/pages/116471927/Bamboo+Build+Commit+Log+Task) | `dm-bamboo-delta-plugin-<version>.jar` | `mci-build-commit-log` | Builds a log file containing a list of files that have changed in a given repository since the last successful build |
+| [Bamboo Compile DataStage Project Task](/wiki/spaces/MCIDOC/pages/116526376/Bamboo+Compile+DataStage+Project+Task) | `dm-dscompile-plugin-<version>.jar` | ??? | Compiles all compilable assets within a DataStage project |
+| [Bamboo Compliance Test Task](/wiki/spaces/MCIDOC/pages/408322090/Bamboo+Compliance+Test+Task) | `dm-compliance-plugin-<version>.jar` | `mci-compliance-test` | Test one or more ISX files against one or more user-supplied compliance rules |
+| [Bamboo Connector Migration Task](/wiki/spaces/MCIDOC/pages/458260491/Bamboo+Connector+Migration+Task) | `dm-ccmigrate-plugin-<version>.jar` | ??? | Use the IBM-supplied Connector Migration Tool to automatically modify Jobs to use Connector Stages instead of the deprecated Plug-in and Operator Stages |
+| [Bamboo DataStage Admin Task](/wiki/spaces/MCIDOC/pages/408387649/Bamboo+DataStage+Admin+Task) | `dm-dsadmin-plugin-<version>.jar` | `mci-datastage-admin` | Create or delete DataStage Projects (or test that they exist) |
+| [Bamboo DataStage Message Handlers Task](/wiki/spaces/MCIDOC/pages/412155905/Bamboo+DataStage+Message+Handlers+Task) | `dm-dsmsgh-plugin-<version>.jar` | ??? | Inject job level message handlers into ISX files that then will be imported into DataStage |
+| [Bamboo Execute DataStage Job Task](/wiki/spaces/MCIDOC/pages/116528256/Bamboo+Execute+DataStage+Job+Task) | `dm-dsexecute-plugin-<version>.jar` | ??? | Execute a DataStage job or sequence |
+| [Bamboo Export DataStage Asset Task](/wiki/spaces/MCIDOC/pages/409305095/Bamboo+Export+DataStage+Asset+Task) | `dm-isxexport-plugin-<version>.jar` | ??? | Export DataStage assets (specified by name, list or entire project) as individual ISX files in a folder structure matching the project |
+| [Bamboo Import DataStage Asset Task](/wiki/spaces/MCIDOC/pages/409796627/Bamboo+Import+DataStage+Asset+Task) | `dm-isximport-plugin-<version>.jar` | ??? | Import ISX files (either specific files, a list of files, or an entire directory) into an existing DataStage project |
+| [Bamboo Incremental Deployment Task](/wiki/spaces/MCIDOC/pages/264962064/Bamboo+Incremental+Deployment+Task) | `dm-dsdeploy-plugin-<version>.jar` | `mci-incremental-datastage-deployment` | Intelligently provision an entire directory of ISX files to an existing DataStage Project using the minimum number of delta operations |
+| [Bamboo Properties Configuration Task](/wiki/spaces/MCIDOC/pages/266862593/Bamboo+Properties+Configuration+Task) | `dm-bamboo-properties-config-plugin-<version>.jar` | `mci-properties-configuration` | Substitute ${variable} placeholders in config files with environment specific values from plan variables and override files |
+| [Bamboo Run DataStage Unit Tests Task](/wiki/spaces/MCIDOC/pages/512163847/Bamboo+Run+DataStage+Unit+Tests+Task) | `dm-dstest-plugin-<version>.jar` | `mci-datastage-unit-tests` | Execute Unit Test specification(s) created by the MettleCI Workbench |
+| [Bamboo SFTP Download Task](/wiki/spaces/MCIDOC/pages/499220487/Bamboo+SFTP+Download+Task) | `dm-bamboo-sftp-plugin-<version>.jar` | `mci-sftp-download` | Transfer files from a remote server to the local working directory |
+| [Bamboo SFTP Upload Task](/wiki/spaces/MCIDOC/pages/499056670/Bamboo+SFTP+Upload+Task) | `dm-bamboo-sftp-plugin-<version>.jar` | `mci-sftp-upload` | Transfer files in the local working directory to a remote server |
+
+> [!INFO]
+> Note that to use MettleCI plugins in Bamboo you’ll also need to [install the Bamboo License Admin plugin](../atlassian-bamboo/atlassian-bamboo-mettleci-license-activation.md) which is provided in file `dm-bamboo-license-admin-plugin-<version>.jar`.

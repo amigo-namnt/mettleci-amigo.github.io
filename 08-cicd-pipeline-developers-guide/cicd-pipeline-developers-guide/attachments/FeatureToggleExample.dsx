@@ -1,0 +1,1250 @@
+BEGIN HEADER
+   CharacterSet "CP1252"
+   ExportingTool "IBM InfoSphere DataStage Export"
+   ToolVersion "8"
+   ServerName "TEST1-ENGN.DATAMIGRATORS.IO"
+   ToolInstanceID "dstage1"
+   MDISVersion "1.0"
+   Date "2020-06-02"
+   Time "17.05.10"
+   ServerVersion "11.5"
+END HEADER
+BEGIN DSJOB
+   Identifier "Example"
+   DateModified "2020-06-02"
+   TimeModified "17.04.53"
+   BEGIN DSRECORD
+      Identifier "ROOT"
+      OLEType "CJobDefn"
+      Readonly "0"
+      Name "Example"
+      NextID "1"
+      Container "V0"
+      FullDescription =+=+=+=
+Designed as a drop in replacement for the original "Example" job before using a Feature Toggle.
+
+Will check the value of the "FEATURE_EXAMPLE" Project Environment Variable.  If it is set to "ON" then Example_On will run, otherwise Example_Off will run.
+=+=+=+=
+      JobVersion "56.0.0"
+      JobControlCode =+=+=+=
+* Tokens were replaced below as follows:
+* IdV0S0%%Result1%%0 <= CheckFeatureExample.$ReturnValue
+* IdV0S0%%Name%%1 <= CheckFeatureExample.$RoutineName
+* IdV0S0%%Param%%2 <= CheckFeatureExample.Name
+* IdV0S5%%Result2%%3 <= Example_Off.$UserStatus
+* IdV0S5%%Result1%%4 <= Example_Off.$JobStatus
+* IdV0S5%%Name%%5 <= Example_Off.$JobName
+* IdV0S6%%Result2%%6 <= Example_On.$UserStatus
+* IdV0S6%%Result1%%7 <= Example_On.$JobStatus
+* IdV0S6%%Name%%8 <= Example_On.$JobName
+*
+*** [Generated at 2020-06-02 17:04:51 - 11.5.0.0]
+   $INCLUDE DSINCLUDE DSJ_XFUNCS.H
+   EQU Time$$ Lit "Oconv(Time(), 'MTS:'):': '"
+****************************************
+* Graphical Sequencer generated code for Job Example
+****************************************
+   
+   handle$list = ""
+   id$list = ""
+   abort$list = ""
+   b$Abandoning = @False
+   summary$restarting = @False
+*** Sequence start point
+   summary$ = DSMakeMsg("DSTAGE_JSG_M_0048\\Summary of sequence run", "")
+   If summary$restarting Then
+      summary$<1,-1> = Time$$:Convert(@VM, " ", DSMakeMsg("DSTAGE_JSG_M_0049\\Sequence restarted after failure", ""))
+   End Else
+      summary$<1,-1> = Time$$:Convert(@VM, " ", DSMakeMsg("DSTAGE_JSG_M_0051\\Sequence started", ""))
+   End
+   GoTo L$V0S0$START
+L$RETURN$1:
+   GoTo L$WAITFORJOB
+**************************************************
+L$V0S0$START:
+*** Activity "CheckFeatureExample": Call routine
+   summary$<1,-1> = Time$$:Convert(@VM, " ", DSMakeMsg("DSTAGE_JSG_M_0058\\%1 (ROUTINE %2) started", "CheckFeatureExample":@FM:"DSU.IsFeatureToggleEnabled"))
+   rtn$ok = DSCheckRoutine("DSU.IsFeatureToggleEnabled")
+   If (Not(rtn$ok)) Then
+      msg$ = DSMakeMsg("DSTAGE_JSG_M_0005\\BASIC routine is not cataloged: %1", "DSU.IsFeatureToggleEnabled")
+      msg$id = "@CheckFeatureExample"; GoTo L$ERROR
+   End
+   p$V0S0$1 = "FEATURE_EXAMPLE"
+   Call 'DSU.IsFeatureToggleEnabled'(r$V0S0, p$V0S0$1)
+   summary$<1,-1> = Time$$:Convert(@VM, " ", DSMakeMsg("DSTAGE_JSG_M_0064\\%1 finished, reply=%2", "CheckFeatureExample":@FM:r$V0S0))
+   IdV0S0%%Result1%%0 = r$V0S0
+   IdV0S0%%Name%%1 = "DSU.IsFeatureToggleEnabled"
+   IdV0S0%%Param%%2 = (p$V0S0$1)
+   If (r$V0S0 <> 0) Then GoTo L$V0S5$START
+L$V0S0$RETURN$1:
+   If (r$V0S0 = 0) Then GoTo L$V0S6$START
+L$V0S0$RETURN$2:
+   GoTo L$RETURN$1
+**************************************************
+L$V0S5$START:
+*** Activity "Example_Off": Initialize job
+   h$V0S5 = DSAttachJob("Example_Off", DSJ.ERRNONE)
+   If (Not(h$V0S5)) Then
+      msg$ = DSMakeMsg("DSTAGE_JSG_M_0001\\Error calling DSAttachJob(%1)<L>%2", "Example_Off":@FM:DSGetLastErrorMsg())
+      msg$id = "@Example_Off"; GoTo L$ERROR
+   End
+   If DSGetJobInfo(h$V0S5, DSJ.JOBMULTIINVOKABLE) Then
+      jb$V0S5 = "Example_Off":'.':"Example_Off"
+   End Else
+      jb$V0S5 = "Example_Off"
+   End
+   dummy$ = DSDetachJob(h$V0S5)
+   summary$<1,-1> = Time$$:Convert(@VM, " ", DSMakeMsg("DSTAGE_JSG_M_0057\\%1 (JOB %2) started", "Example_Off":@FM:jb$V0S5))
+   h$V0S5 = DSAttachJob(jb$V0S5, DSJ.ERRNONE)
+   If (Not(h$V0S5)) Then
+      msg$ = DSMakeMsg("DSTAGE_JSG_M_0001\\Error calling DSAttachJob(%1)<L>%2", jb$V0S5:@FM:DSGetLastErrorMsg())
+      msg$id = "@Example_Off"; GoTo L$ERROR
+   End
+   p$V0S5$1 = (FirstParameter)
+   err$code = DSSetParam(h$V0S5, "FirstParameter", p$V0S5$1)
+   If (err$code <> DSJE.NOERROR) Then
+      msg$ = DSMakeMsg("DSTAGE_JSG_M_0002\\Error calling DSSetParam(%1), code=%2[E]", "FirstParameter":@FM:err$code)
+      msg$id = "@Example_Off"; GoTo L$ERROR
+   End
+   p$V0S5$2 = (SecondParameter)
+   err$code = DSSetParam(h$V0S5, "SecondParameter", p$V0S5$2)
+   If (err$code <> DSJE.NOERROR) Then
+      msg$ = DSMakeMsg("DSTAGE_JSG_M_0002\\Error calling DSSetParam(%1), code=%2[E]", "SecondParameter":@FM:err$code)
+      msg$id = "@Example_Off"; GoTo L$ERROR
+   End
+   p$V0S5$3 = ($APT_CONFIG_FILE)
+   err$code = DSSetParam(h$V0S5, "$APT_CONFIG_FILE", p$V0S5$3)
+   If (err$code <> DSJE.NOERROR) Then
+      msg$ = DSMakeMsg("DSTAGE_JSG_M_0002\\Error calling DSSetParam(%1), code=%2[E]", "$APT_CONFIG_FILE":@FM:err$code)
+      msg$id = "@Example_Off"; GoTo L$ERROR
+   End
+   err$code = DSRunJob(h$V0S5, DSJ.RUNNORMAL)
+   If (err$code <> DSJE.NOERROR) Then
+      msg$ = DSMakeMsg("DSTAGE_JSG_M_0003\\Error calling DSRunJob(%1), code=%2[E]", jb$V0S5:@FM:err$code)
+      msg$id = "@Example_Off"; GoTo L$ERROR
+   End
+   handle$list<-1> = h$V0S5
+   id$list<-1> = "V0S5"
+   GoTo L$V0S0$RETURN$1
+**************************************************
+L$V0S5$FINISHED:
+   job$V0S5$status = DSGetJobInfo(h$V0S5, DSJ.JOBSTATUS)
+   job$V0S5$userstatus = DSGetJobInfo(h$V0S5, DSJ.USERSTATUS)
+   summary$<1,-1> = Time$$:Convert(@VM, " ", DSMakeMsg("DSTAGE_JSG_M_0063\\%1 (JOB %2) finished, status=%3[E]", "Example_Off":@FM:jb$V0S5:@FM:job$V0S5$status))
+   IdV0S5%%Result2%%3 = job$V0S5$userstatus
+   IdV0S5%%Result1%%4 = job$V0S5$status
+   IdV0S5%%Name%%5 = jb$V0S5
+   dummy$ = DSDetachJob(h$V0S5)
+   If (job$V0S5$status <> DSJS.RUNOK And job$V0S5$status <> DSJS.RUNWARN And Not(b$Abandoning)) Then
+      msg$ = DSMakeMsg("DSTAGE_JSG_M_0024\\Unhandled abort encountered in job %1", jb$V0S5)
+      msg$id = "@Example_Off"; GoTo L$ERROR
+   End
+   GoTo L$WAITFORJOB
+**************************************************
+L$V0S6$START:
+*** Activity "Example_On": Initialize job
+   h$V0S6 = DSAttachJob("Example_On", DSJ.ERRNONE)
+   If (Not(h$V0S6)) Then
+      msg$ = DSMakeMsg("DSTAGE_JSG_M_0001\\Error calling DSAttachJob(%1)<L>%2", "Example_On":@FM:DSGetLastErrorMsg())
+      msg$id = "@Example_On"; GoTo L$ERROR
+   End
+   If DSGetJobInfo(h$V0S6, DSJ.JOBMULTIINVOKABLE) Then
+      jb$V0S6 = "Example_On":'.':"Example_On"
+   End Else
+      jb$V0S6 = "Example_On"
+   End
+   dummy$ = DSDetachJob(h$V0S6)
+   summary$<1,-1> = Time$$:Convert(@VM, " ", DSMakeMsg("DSTAGE_JSG_M_0057\\%1 (JOB %2) started", "Example_On":@FM:jb$V0S6))
+   h$V0S6 = DSAttachJob(jb$V0S6, DSJ.ERRNONE)
+   If (Not(h$V0S6)) Then
+      msg$ = DSMakeMsg("DSTAGE_JSG_M_0001\\Error calling DSAttachJob(%1)<L>%2", jb$V0S6:@FM:DSGetLastErrorMsg())
+      msg$id = "@Example_On"; GoTo L$ERROR
+   End
+   p$V0S6$1 = (FirstParameter)
+   err$code = DSSetParam(h$V0S6, "FirstParameter", p$V0S6$1)
+   If (err$code <> DSJE.NOERROR) Then
+      msg$ = DSMakeMsg("DSTAGE_JSG_M_0002\\Error calling DSSetParam(%1), code=%2[E]", "FirstParameter":@FM:err$code)
+      msg$id = "@Example_On"; GoTo L$ERROR
+   End
+   p$V0S6$2 = (SecondParameter)
+   err$code = DSSetParam(h$V0S6, "SecondParameter", p$V0S6$2)
+   If (err$code <> DSJE.NOERROR) Then
+      msg$ = DSMakeMsg("DSTAGE_JSG_M_0002\\Error calling DSSetParam(%1), code=%2[E]", "SecondParameter":@FM:err$code)
+      msg$id = "@Example_On"; GoTo L$ERROR
+   End
+   p$V0S6$3 = ($APT_CONFIG_FILE)
+   err$code = DSSetParam(h$V0S6, "$APT_CONFIG_FILE", p$V0S6$3)
+   If (err$code <> DSJE.NOERROR) Then
+      msg$ = DSMakeMsg("DSTAGE_JSG_M_0002\\Error calling DSSetParam(%1), code=%2[E]", "$APT_CONFIG_FILE":@FM:err$code)
+      msg$id = "@Example_On"; GoTo L$ERROR
+   End
+   err$code = DSRunJob(h$V0S6, DSJ.RUNNORMAL)
+   If (err$code <> DSJE.NOERROR) Then
+      msg$ = DSMakeMsg("DSTAGE_JSG_M_0003\\Error calling DSRunJob(%1), code=%2[E]", jb$V0S6:@FM:err$code)
+      msg$id = "@Example_On"; GoTo L$ERROR
+   End
+   handle$list<-1> = h$V0S6
+   id$list<-1> = "V0S6"
+   GoTo L$V0S0$RETURN$2
+**************************************************
+L$V0S6$FINISHED:
+   job$V0S6$status = DSGetJobInfo(h$V0S6, DSJ.JOBSTATUS)
+   job$V0S6$userstatus = DSGetJobInfo(h$V0S6, DSJ.USERSTATUS)
+   summary$<1,-1> = Time$$:Convert(@VM, " ", DSMakeMsg("DSTAGE_JSG_M_0063\\%1 (JOB %2) finished, status=%3[E]", "Example_On":@FM:jb$V0S6:@FM:job$V0S6$status))
+   IdV0S6%%Result2%%6 = job$V0S6$userstatus
+   IdV0S6%%Result1%%7 = job$V0S6$status
+   IdV0S6%%Name%%8 = jb$V0S6
+   dummy$ = DSDetachJob(h$V0S6)
+   If (job$V0S6$status <> DSJS.RUNOK And job$V0S6$status <> DSJS.RUNWARN And Not(b$Abandoning)) Then
+      msg$ = DSMakeMsg("DSTAGE_JSG_M_0024\\Unhandled abort encountered in job %1", jb$V0S6)
+      msg$id = "@Example_On"; GoTo L$ERROR
+   End
+   GoTo L$WAITFORJOB
+**************************************************
+L$WAITFORJOB:
+   If handle$list = "" Then GoTo L$FINISH
+   handle$ = DSWaitForJob(handle$list)
+   If handle$ = 0 Then handle$ = handle$list<1>
+   Locate handle$ In handle$list Setting index$ Then
+      id$ = id$list<index$>
+      Del id$list<index$>; Del handle$list<index$>
+      b$Abandoning = abort$list<index$>; Del abort$list<index$>
+      Begin Case
+      Case id$ = "V0S5"
+         GoTo L$V0S5$FINISHED
+      Case id$ = "V0S6"
+         GoTo L$V0S6$FINISHED
+      End Case
+   End
+* Error if fall though
+   handle$list = ""
+   msg$ = DSMakeMsg("DSTAGE_JSG_M_0008\\Error calling DSWaitForJob(), code=%1[E]", handle$)
+   msg$id = "@Coordinator"; GoTo L$ERROR
+**************************************************
+L$ERROR:
+   Call DSLogWarn(DSMakeMsg("DSTAGE_JSG_M_0009\\Controller problem: %1", msg$), msg$id)
+   summary$<1,-1> = Time$$:Convert(@VM, " ", DSMakeMsg("DSTAGE_JSG_M_0052\\Exception raised: %1", msg$id:", ":msg$))
+   abort$list = Ifs(handle$list, Str(1:@FM, DCount(handle$list, @FM)), "")
+   b$Abandoning = @True
+   GoTo L$WAITFORJOB
+L$ABORT:
+   summary$<1,-1> = Time$$:Convert(@VM, " ", DSMakeMsg("DSTAGE_JSG_M_0056\\Sequence failed", ""))
+   x$masked$summary = summary$
+   Call DSMaskExecArgs(x$masked$summary, '')
+   Call DSLogInfo(x$masked$summary, "@Coordinator")
+   Call DSLogFatal(DSMakeMsg("DSTAGE_JSG_M_0013\\Sequence job will abort due to previous unrecoverable errors", ""), "@Coordinator")
+**************************************************
+L$FINISH:
+   If b$Abandoning Then GoTo L$ABORT
+   summary$<1,-1> = Time$$:Convert(@VM, " ", DSMakeMsg("DSTAGE_JSG_M_0054\\Sequence finished OK", ""))
+   x$masked$summary = summary$
+   Call DSMaskExecArgs(x$masked$summary, '')
+   Call DSLogInfo(x$masked$summary, "@Coordinator")
+   L$EXIT: Return To L$EXIT
+ 
+
+=+=+=+=
+      ControlAfterSubr "0"
+      Parameters "CParameters"
+      BEGIN DSSUBRECORD
+         Name "FirstParameter"
+         Prompt "FirstParameter"
+         ParamType "0"
+         ParamLength "0"
+         ParamScale "0"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Name "SecondParameter"
+         Prompt "SecondParameter"
+         ParamType "0"
+         ParamLength "0"
+         ParamScale "0"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Name "$APT_CONFIG_FILE"
+         Prompt "Configuration file"
+         Default "/opt/IBM/InformationServer/Server/Configurations/default.apt"
+         HelpTxt "The Parallel job configuration file."
+         ParamType "4"
+         ParamLength "0"
+         ParamScale "0"
+      END DSSUBRECORD
+      MetaBag "CMetaProperty"
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "AdvancedRuntimeOptions"
+         Value "#DSProjectARTOptions#"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "SequenceUseGridProperties"
+         Value "0"
+      END DSSUBRECORD
+      NULLIndicatorPosition "0"
+      Dependencies "CJobDepend"
+      BEGIN DSSUBRECORD
+         Name "IsFeatureToggleEnabled"
+         Type "1"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Name "Example_Off"
+         Type "0"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Name "Example_On"
+         Type "0"
+      END DSSUBRECORD
+      IsTemplate "0"
+      NLSLocale ",,,,"
+      JobType "2"
+      Category "\\Jobs\\Feature Toggle Example"
+      CenturyBreakYear "30"
+      NextAliasID "2"
+      ParameterFileDDName "DD00001"
+      ReservedWordCheck "1"
+      TransactionSize "0"
+      ValidationStatus "0"
+      Uploadable "0"
+      PgmCustomizationFlag "0"
+      JobReportFlag "0"
+      AllowMultipleInvocations "0"
+      JobSeqCodeGenOpts "handleaborts"
+      Act2ActOverideDefaults "0"
+      Act2ActEnableRowBuffer "0"
+      Act2ActUseIPC "0"
+      Act2ActBufferSize "0"
+      Act2ActIPCTimeout "0"
+      ExpressionSemanticCheckFlag "0"
+      TraceOption "0"
+      EnableCacheSharing "0"
+      RuntimeColumnPropagation "0"
+      RelStagesInJobStatus "-1"
+      WebServiceEnabled "0"
+      MFProcessMetaData "0"
+      MFProcessMetaDataXMLFileExchangeMethod "0"
+      IMSProgType "0"
+      CopyLibPrefix "ARDT"
+      RecordPerformanceResults "0"
+   END DSRECORD
+   BEGIN DSRECORD
+      Identifier "V0"
+      OLEType "CContainerView"
+      Readonly "0"
+      Name "Job"
+      NextID "1"
+      IsTopLevel "0"
+      StageList "V0S0|V0S5|V0S6|V0A7"
+      StageXPos "48|240|240|24"
+      StageYPos "264|360|168|22"
+      StageTypes "CJSRoutineActivity|CJSJobActivity|CJSJobActivity|ID_PALETTEJOBANNOTATION"
+      NextStageID "8"
+      SnapToGrid "1"
+      GridLines "0"
+      ZoomValue "100"
+      StageXSize "48|48|48|384"
+      StageYSize "48|48|48|124"
+      ContainerViewSizing "0150 0150 1472 0706 0000 0001 0000 0000"
+      StageNames "CheckFeatureExample|Example_Off|Example_On| "
+      StageTypeIDs "CRoutineActivity|CJobActivity|CJobActivity| "
+      LinkNames "On,Off| | | "
+      LinkHasMetaDatas "False,False| | | "
+      LinkTypes "1,1| | | "
+      LinkNamePositionXs "146,149| | | "
+      LinkNamePositionYs "247,316| | | "
+      TargetStageIDs "V0S6,V0S5| | | "
+      SourceStageEffectiveExecutionModes "0,0| | | "
+      SourceStageRuntimeExecutionModes "0,0| | | "
+      TargetStageEffectiveExecutionModes "0,0| | | "
+      TargetStageRuntimeExecutionModes "0,0| | | "
+      LinkIsSingleOperatorLookup "False,False| | | "
+      LinkIsSortSequential "False,False| | | "
+      LinkSortMode "0,0| | | "
+      LinkPartColMode "0,0| | | "
+      LinkSourcePinIDs "V0S0P1,V0S0P2| | | "
+   END DSRECORD
+   BEGIN DSRECORD
+      Identifier "V0A7"
+      OLEType "CAnnotation"
+      Readonly "0"
+      Name "V0A7"
+      NextID "0"
+      AnnotationType "2"
+      TextFont "MS Shell Dlg\\10\\0\\0\\0\\400\\0"
+      TextHorizontalJustification "1"
+      TextVerticalJustification "1"
+      TextColor "0"
+      BackgroundColor "12713983"
+      BackgroundTransparent "0"
+      BorderVisible "1"
+   END DSRECORD
+   BEGIN DSRECORD
+      Identifier "V0S0"
+      OLEType "CJSRoutineActivity"
+      Readonly "0"
+      Name "CheckFeatureExample"
+      NextID "3"
+      OutputPins "V0S0P1|V0S0P2"
+      RoutineType "1"
+      Routinename "IsFeatureToggleEnabled"
+      ParameterValues "CParamValues"
+      BEGIN DSSUBRECORD
+         Name "Name"
+         Description "\"FEATURE_EXAMPLE\""
+         ValueType "4"
+         DisplayValue "\"FEATURE_EXAMPLE\""
+      END DSSUBRECORD
+      CatalogueName "DSU.IsFeatureToggleEnabled"
+      CheckPoint "0"
+      StageType "CRoutineActivity"
+   END DSRECORD
+   BEGIN DSRECORD
+      Identifier "V0S0P1"
+      OLEType "CJSActivityOutput"
+      Readonly "0"
+      Name "On"
+      Partner "V0S6|V0S6P1"
+      ConditionType "2"
+      TriggerExpression "\"Executed OK\""
+      LeftTextPos "146"
+      TopTextPos "247"
+      SourceID "V0S0"
+   END DSRECORD
+   BEGIN DSRECORD
+      Identifier "V0S0P2"
+      OLEType "CJSActivityOutput"
+      Readonly "0"
+      Name "Off"
+      Partner "V0S5|V0S5P1"
+      ConditionType "3"
+      TriggerExpression "\"Execution Failed\""
+      LeftTextPos "149"
+      TopTextPos "316"
+      SourceID "V0S0"
+   END DSRECORD
+   BEGIN DSRECORD
+      Identifier "V0S5"
+      OLEType "CJSJobActivity"
+      Readonly "0"
+      Name "Example_Off"
+      NextID "2"
+      InputPins "V0S5P1"
+      JobType "0"
+      ExecutionType "0"
+      Jobname "Example_Off"
+      ParameterValues "CParamValues"
+      BEGIN DSSUBRECORD
+         Name "FirstParameter"
+         Description "FirstParameter"
+         ValueType "4"
+         DisplayValue "FirstParameter"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Name "SecondParameter"
+         Description "SecondParameter"
+         ValueType "4"
+         DisplayValue "SecondParameter"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Name "$APT_CONFIG_FILE"
+         Description "$APT_CONFIG_FILE"
+         ValueType "4"
+         DisplayValue "$APT_CONFIG_FILE"
+      END DSSUBRECORD
+      CheckPoint "0"
+      StageType "CJobActivity"
+   END DSRECORD
+   BEGIN DSRECORD
+      Identifier "V0S5P1"
+      OLEType "CJSActivityInput"
+      Readonly "0"
+      Name "Off"
+      Partner "V0S0|V0S0P2"
+      LinkType "1"
+   END DSRECORD
+   BEGIN DSRECORD
+      Identifier "V0S6"
+      OLEType "CJSJobActivity"
+      Readonly "0"
+      Name "Example_On"
+      NextID "2"
+      InputPins "V0S6P1"
+      JobType "0"
+      ExecutionType "0"
+      Jobname "Example_On"
+      ParameterValues "CParamValues"
+      BEGIN DSSUBRECORD
+         Name "FirstParameter"
+         Description "FirstParameter"
+         ValueType "4"
+         DisplayValue "FirstParameter"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Name "SecondParameter"
+         Description "SecondParameter"
+         ValueType "4"
+         DisplayValue "SecondParameter"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Name "$APT_CONFIG_FILE"
+         Description "$APT_CONFIG_FILE"
+         ValueType "4"
+         DisplayValue "$APT_CONFIG_FILE"
+      END DSSUBRECORD
+      CheckPoint "0"
+      StageType "CJobActivity"
+   END DSRECORD
+   BEGIN DSRECORD
+      Identifier "V0S6P1"
+      OLEType "CJSActivityInput"
+      Readonly "0"
+      Name "On"
+      Partner "V0S0|V0S0P1"
+      LinkType "1"
+   END DSRECORD
+END DSJOB
+BEGIN DSJOB
+   Identifier "Example_Off"
+   DateModified "2020-06-02"
+   TimeModified "16.59.32"
+   BEGIN DSRECORD
+      Identifier "ROOT"
+      OLEType "CJobDefn"
+      Readonly "0"
+      Name "Example_Off"
+      NextID "1"
+      Container "V0"
+      FullDescription =+=+=+=
+Example jobs demonstrating functionality to run when the "FEATURE_EXAMPLE" toggle is OFF.
+
+The differences between the ON and OFF version are superficial to demonstrate the concept of feature toggles.
+=+=+=+=
+      JobVersion "56.0.0"
+      ControlAfterSubr "0"
+      Parameters "CParameters"
+      BEGIN DSSUBRECORD
+         Name "FirstParameter"
+         Prompt "FirstParameter"
+         ParamType "0"
+         ParamLength "0"
+         ParamScale "0"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Name "SecondParameter"
+         Prompt "SecondParameter"
+         ParamType "0"
+         ParamLength "0"
+         ParamScale "0"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Name "$APT_CONFIG_FILE"
+         Prompt "Configuration file"
+         Default "/opt/IBM/InformationServer/Server/Configurations/default.apt"
+         HelpTxt "The Parallel job configuration file."
+         ParamType "4"
+         ParamLength "0"
+         ParamScale "0"
+      END DSSUBRECORD
+      MetaBag "CMetaProperty"
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "AdvancedRuntimeOptions"
+         Value "#DSProjectARTOptions#"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "TraceMode"
+         Value "0"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "TraceSeq"
+         Value "1"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "TraceRecords"
+         Value "100"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "TraceSkip"
+         Value "0"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "TracePeriod"
+         Value "1"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "RecordJobPerformanceData"
+         Value "0"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "IdentList"
+         Value "peekDummy|rgenDummy"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "ClientCodePage"
+         Value "1252"
+      END DSSUBRECORD
+      NULLIndicatorPosition "0"
+      OrchestrateCode =+=+=+=
+#################################################################
+#### STAGE: peekDummy
+## Operator
+peek
+## Operator options
+-nrecs 10
+-name
+
+## General options
+[ident('peekDummy'); jobmon_ident('peekDummy')]
+## Inputs
+0< [] 'rgenDummy:DSLink2.v'
+;
+
+#################################################################
+#### STAGE: rgenDummy
+## Operator
+generator
+## Operator options
+-schema record
+(
+  Text:string[max=12] {alphabet='abcdefghij1234567890'};
+)
+-records 10
+
+## General options
+[ident('rgenDummy'); jobmon_ident('rgenDummy')]
+## Outputs
+0> [] 'rgenDummy:DSLink2.v'
+;
+
+
+=+=+=+=
+      IsTemplate "0"
+      NLSLocale ",,,,"
+      JobType "3"
+      Category "\\Jobs\\Feature Toggle Example"
+      CenturyBreakYear "30"
+      NextAliasID "2"
+      ParameterFileDDName "DD00001"
+      ReservedWordCheck "1"
+      TransactionSize "0"
+      ValidationStatus "0"
+      Uploadable "0"
+      PgmCustomizationFlag "0"
+      JobReportFlag "0"
+      AllowMultipleInvocations "0"
+      Act2ActOverideDefaults "0"
+      Act2ActEnableRowBuffer "0"
+      Act2ActUseIPC "0"
+      Act2ActBufferSize "0"
+      Act2ActIPCTimeout "0"
+      ExpressionSemanticCheckFlag "0"
+      TraceOption "0"
+      EnableCacheSharing "0"
+      RuntimeColumnPropagation "0"
+      RelStagesInJobStatus "-1"
+      WebServiceEnabled "0"
+      MFProcessMetaData "0"
+      MFProcessMetaDataXMLFileExchangeMethod "0"
+      IMSProgType "0"
+      CopyLibPrefix "ARDT"
+      RecordPerformanceResults "0"
+   END DSRECORD
+   BEGIN DSRECORD
+      Identifier "V0"
+      OLEType "CContainerView"
+      Readonly "0"
+      Name "Job"
+      NextID "1"
+      IsTopLevel "0"
+      StageList "V0S0|V0S1|V0A3"
+      StageXPos "264|72|21"
+      StageYPos "144|144|16"
+      StageTypes "CCustomStage|CCustomStage|ID_PALETTEJOBANNOTATION"
+      NextStageID "4"
+      SnapToGrid "1"
+      GridLines "0"
+      ZoomValue "100"
+      StageXSize "48|48|363"
+      StageYSize "48|48|105"
+      ContainerViewSizing "0025 0025 1272 0746 0000 0001 0000 0000"
+      StageNames "peekDummy|rgenDummy| "
+      StageTypeIDs "PxPeek|PxRowGenerator| "
+      LinkNames " |DSLink2| "
+      LinkHasMetaDatas " |True| "
+      LinkTypes " |1| "
+      LinkNamePositionXs " |209| "
+      LinkNamePositionYs " |168| "
+      TargetStageIDs " |V0S0| "
+      SourceStageEffectiveExecutionModes " |1| "
+      SourceStageRuntimeExecutionModes " |1| "
+      TargetStageEffectiveExecutionModes " |2| "
+      TargetStageRuntimeExecutionModes " |2| "
+      LinkIsSingleOperatorLookup " |False| "
+      LinkIsSortSequential " |False| "
+      LinkSortMode " |0| "
+      LinkPartColMode " |1| "
+      LinkSourcePinIDs " |V0S1P1| "
+   END DSRECORD
+   BEGIN DSRECORD
+      Identifier "V0A3"
+      OLEType "CAnnotation"
+      Readonly "0"
+      Name "V0A3"
+      NextID "0"
+      AnnotationType "2"
+      TextFont "MS Shell Dlg\\10\\0\\0\\0\\400\\0"
+      TextHorizontalJustification "1"
+      TextVerticalJustification "1"
+      TextColor "0"
+      BackgroundColor "12713983"
+      BackgroundTransparent "0"
+      BorderVisible "1"
+   END DSRECORD
+   BEGIN DSRECORD
+      Identifier "V0S0"
+      OLEType "CCustomStage"
+      Readonly "0"
+      Name "peekDummy"
+      NextID "2"
+      InputPins "V0S0P1"
+      StageType "PxPeek"
+      AllowColumnMapping "0"
+      Properties "CCustomProperty"
+      BEGIN DSSUBRECORD
+         Name "all"
+         Value " "
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Name "nrecs"
+         Value "10"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Name "dataset"
+         Value " "
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Name "name"
+         Value "name"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Name "columns"
+         Value " "
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Name "selection"
+         Value " "
+      END DSSUBRECORD
+      NextRecordID "0"
+   END DSRECORD
+   BEGIN DSRECORD
+      Identifier "V0S0P1"
+      OLEType "CCustomInput"
+      Readonly "0"
+      Name "DSLink2"
+      Partner "V0S1|V0S1P1"
+      LinkType "1"
+      MetaBag "CMetaProperty"
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "RTColumnProp"
+         Value "0"
+      END DSSUBRECORD
+      TransactionSize "0"
+      TXNBehaviour "0"
+      EnableTxGroup "0"
+      LinkMinimised "0"
+   END DSRECORD
+   BEGIN DSRECORD
+      Identifier "V0S1"
+      OLEType "CCustomStage"
+      Readonly "0"
+      Name "rgenDummy"
+      NextID "2"
+      OutputPins "V0S1P1"
+      StageType "PxRowGenerator"
+      AllowColumnMapping "0"
+      NextRecordID "0"
+   END DSRECORD
+   BEGIN DSRECORD
+      Identifier "V0S1P1"
+      OLEType "CCustomOutput"
+      Readonly "0"
+      Name "DSLink2"
+      Partner "V0S0|V0S0P1"
+      Properties "CCustomProperty"
+      BEGIN DSSUBRECORD
+         Name "schema"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Name "records"
+         Value "10"
+      END DSSUBRECORD
+      Columns "COutputColumn"
+      BEGIN DSSUBRECORD
+         Name "Text"
+         SqlType "12"
+         Precision "12"
+         Scale "0"
+         Nullable "0"
+         KeyPosition "0"
+         DisplaySize "0"
+         Group "0"
+         SortKey "0"
+         SortType "0"
+         AllowCRLF "0"
+         LevelNo "0"
+         Occurs "0"
+         PadNulls "0"
+         SignOption "0"
+         SortingOrder "0"
+         ArrayHandling "0"
+         SyncIndicator "0"
+         PadChar ""
+         APTFieldProp "alphabet='abcdefghij1234567890'"
+         ExtendedPrecision "0"
+         TaggedSubrec "0"
+         OccursVarying "0"
+         PKeyIsCaseless "0"
+         SCDPurpose "0"
+      END DSSUBRECORD
+      LeftTextPos "209"
+      TopTextPos "168"
+      LinkMinimised "0"
+   END DSRECORD
+END DSJOB
+BEGIN DSJOB
+   Identifier "Example_On"
+   DateModified "2020-06-02"
+   TimeModified "16.59.25"
+   BEGIN DSRECORD
+      Identifier "ROOT"
+      OLEType "CJobDefn"
+      Readonly "0"
+      Name "Example_On"
+      NextID "1"
+      Container "V0"
+      FullDescription =+=+=+=
+Example jobs demonstrating functionality to run when the "FEATURE_EXAMPLE" toggle is ON.
+
+The differences between the ON and OFF version are superficial to demonstrate the concept of feature toggles.
+=+=+=+=
+      JobVersion "56.0.0"
+      ControlAfterSubr "0"
+      Parameters "CParameters"
+      BEGIN DSSUBRECORD
+         Name "FirstParameter"
+         Prompt "FirstParameter"
+         ParamType "0"
+         ParamLength "0"
+         ParamScale "0"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Name "SecondParameter"
+         Prompt "SecondParameter"
+         ParamType "0"
+         ParamLength "0"
+         ParamScale "0"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Name "$APT_CONFIG_FILE"
+         Prompt "Configuration file"
+         Default "/opt/IBM/InformationServer/Server/Configurations/default.apt"
+         HelpTxt "The Parallel job configuration file."
+         ParamType "4"
+         ParamLength "0"
+         ParamScale "0"
+      END DSSUBRECORD
+      MetaBag "CMetaProperty"
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "AdvancedRuntimeOptions"
+         Value "#DSProjectARTOptions#"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "TraceMode"
+         Value "0"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "TraceSeq"
+         Value "1"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "TraceRecords"
+         Value "100"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "TraceSkip"
+         Value "0"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "TracePeriod"
+         Value "1"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "RecordJobPerformanceData"
+         Value "0"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "IdentList"
+         Value "peekDummy|rgenDummy|cpDummy"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "ClientCodePage"
+         Value "1252"
+      END DSSUBRECORD
+      NULLIndicatorPosition "0"
+      OrchestrateCode =+=+=+=
+#################################################################
+#### STAGE: peekDummy
+## Operator
+peek
+## Operator options
+-nrecs 10
+-name
+
+## General options
+[ident('peekDummy'); jobmon_ident('peekDummy')]
+## Inputs
+0< [] 'cpDummy:DSLink5.v'
+;
+
+#################################################################
+#### STAGE: rgenDummy
+## Operator
+generator
+## Operator options
+-schema record
+(
+  Text:string[max=12] {alphabet='abcdefghij1234567890'};
+)
+-records 10
+
+## General options
+[ident('rgenDummy'); jobmon_ident('rgenDummy')]
+## Outputs
+0> [] 'rgenDummy:DSLink2.v'
+;
+
+#################################################################
+#### STAGE: cpDummy
+## Operator
+copy
+## General options
+[ident('cpDummy'); jobmon_ident('cpDummy')]
+## Inputs
+0< [] 'rgenDummy:DSLink2.v'
+## Outputs
+0> [modify (
+keep
+  Text;
+)] 'cpDummy:DSLink5.v'
+;
+
+
+=+=+=+=
+      IsTemplate "0"
+      NLSLocale ",,,,"
+      JobType "3"
+      Category "\\Jobs\\Feature Toggle Example"
+      CenturyBreakYear "30"
+      NextAliasID "2"
+      ParameterFileDDName "DD00001"
+      ReservedWordCheck "1"
+      TransactionSize "0"
+      ValidationStatus "0"
+      Uploadable "0"
+      PgmCustomizationFlag "0"
+      JobReportFlag "0"
+      AllowMultipleInvocations "0"
+      Act2ActOverideDefaults "0"
+      Act2ActEnableRowBuffer "0"
+      Act2ActUseIPC "0"
+      Act2ActBufferSize "0"
+      Act2ActIPCTimeout "0"
+      ExpressionSemanticCheckFlag "0"
+      TraceOption "0"
+      EnableCacheSharing "0"
+      RuntimeColumnPropagation "0"
+      RelStagesInJobStatus "-1"
+      WebServiceEnabled "0"
+      MFProcessMetaData "0"
+      MFProcessMetaDataXMLFileExchangeMethod "0"
+      IMSProgType "0"
+      CopyLibPrefix "ARDT"
+      RecordPerformanceResults "0"
+   END DSRECORD
+   BEGIN DSRECORD
+      Identifier "V0"
+      OLEType "CContainerView"
+      Readonly "0"
+      Name "Job"
+      NextID "1"
+      IsTopLevel "0"
+      StageList "V0S0|V0S1|V0A3|V0S4"
+      StageXPos "456|72|21|288"
+      StageYPos "144|144|16|144"
+      StageTypes "CCustomStage|CCustomStage|ID_PALETTEJOBANNOTATION|CCustomStage"
+      NextStageID "6"
+      SnapToGrid "1"
+      GridLines "0"
+      ZoomValue "100"
+      StageXSize "48|48|363|48"
+      StageYSize "48|48|105|48"
+      ContainerViewSizing "0025 0025 1272 0746 0000 0001 0000 0000"
+      StageNames "peekDummy|rgenDummy| |cpDummy"
+      StageTypeIDs "PxPeek|PxRowGenerator| |PxCopy"
+      LinkNames " |DSLink2| |DSLink5"
+      LinkHasMetaDatas " |True| |True"
+      LinkTypes " |1| |1"
+      LinkNamePositionXs " |171| |370"
+      LinkNamePositionYs " |171| |172"
+      TargetStageIDs " |V0S4| |V0S0"
+      SourceStageEffectiveExecutionModes " |1| |2"
+      SourceStageRuntimeExecutionModes " |1| |2"
+      TargetStageEffectiveExecutionModes " |2| |2"
+      TargetStageRuntimeExecutionModes " |2| |2"
+      LinkIsSingleOperatorLookup " |False| |False"
+      LinkIsSortSequential " |False| |False"
+      LinkSortMode " |0| |0"
+      LinkPartColMode " |1| |1"
+      LinkSourcePinIDs " |V0S1P1| |V0S4P2"
+   END DSRECORD
+   BEGIN DSRECORD
+      Identifier "V0A3"
+      OLEType "CAnnotation"
+      Readonly "0"
+      Name "V0A3"
+      NextID "0"
+      AnnotationType "2"
+      TextFont "MS Shell Dlg\\10\\0\\0\\0\\400\\0"
+      TextHorizontalJustification "1"
+      TextVerticalJustification "1"
+      TextColor "0"
+      BackgroundColor "12713983"
+      BackgroundTransparent "0"
+      BorderVisible "1"
+   END DSRECORD
+   BEGIN DSRECORD
+      Identifier "V0S0"
+      OLEType "CCustomStage"
+      Readonly "0"
+      Name "peekDummy"
+      NextID "3"
+      InputPins "V0S0P2"
+      StageType "PxPeek"
+      AllowColumnMapping "0"
+      Properties "CCustomProperty"
+      BEGIN DSSUBRECORD
+         Name "all"
+         Value " "
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Name "nrecs"
+         Value "10"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Name "dataset"
+         Value " "
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Name "name"
+         Value "name"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Name "columns"
+         Value " "
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Name "selection"
+         Value " "
+      END DSSUBRECORD
+      NextRecordID "0"
+   END DSRECORD
+   BEGIN DSRECORD
+      Identifier "V0S0P2"
+      OLEType "CCustomInput"
+      Readonly "0"
+      Name "DSLink5"
+      Partner "V0S4|V0S4P2"
+      LinkType "1"
+      MetaBag "CMetaProperty"
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "RTColumnProp"
+         Value "0"
+      END DSSUBRECORD
+      TransactionSize "0"
+      TXNBehaviour "0"
+      EnableTxGroup "0"
+      LinkMinimised "0"
+   END DSRECORD
+   BEGIN DSRECORD
+      Identifier "V0S1"
+      OLEType "CCustomStage"
+      Readonly "0"
+      Name "rgenDummy"
+      NextID "2"
+      OutputPins "V0S1P1"
+      StageType "PxRowGenerator"
+      AllowColumnMapping "0"
+      NextRecordID "0"
+   END DSRECORD
+   BEGIN DSRECORD
+      Identifier "V0S1P1"
+      OLEType "CCustomOutput"
+      Readonly "0"
+      Name "DSLink2"
+      Partner "V0S4|V0S4P1"
+      Properties "CCustomProperty"
+      BEGIN DSSUBRECORD
+         Name "schema"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Name "records"
+         Value "10"
+      END DSSUBRECORD
+      Columns "COutputColumn"
+      BEGIN DSSUBRECORD
+         Name "Text"
+         SqlType "12"
+         Precision "12"
+         Scale "0"
+         Nullable "0"
+         KeyPosition "0"
+         DisplaySize "0"
+         Group "0"
+         SortKey "0"
+         SortType "0"
+         AllowCRLF "0"
+         LevelNo "0"
+         Occurs "0"
+         PadNulls "0"
+         SignOption "0"
+         SortingOrder "0"
+         ArrayHandling "0"
+         SyncIndicator "0"
+         PadChar ""
+         APTFieldProp "alphabet='abcdefghij1234567890'"
+         ExtendedPrecision "0"
+         TaggedSubrec "0"
+         OccursVarying "0"
+         PKeyIsCaseless "0"
+         SCDPurpose "0"
+      END DSSUBRECORD
+      MetaBag "CMetaProperty"
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "DiskWriteInc"
+         Value "1048576"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "BufFreeRun"
+         Value "50"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "MaxMemBufSize"
+         Value "3145728"
+      END DSSUBRECORD
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "QueueUpperSize"
+         Value "0"
+      END DSSUBRECORD
+      LeftTextPos "171"
+      TopTextPos "171"
+      LinkMinimised "0"
+   END DSRECORD
+   BEGIN DSRECORD
+      Identifier "V0S4"
+      OLEType "CCustomStage"
+      Readonly "0"
+      Name "cpDummy"
+      NextID "3"
+      InputPins "V0S4P1"
+      OutputPins "V0S4P2"
+      StageType "PxCopy"
+      AllowColumnMapping "0"
+      Properties "CCustomProperty"
+      BEGIN DSSUBRECORD
+         Name "force"
+         Value " "
+      END DSSUBRECORD
+      NextRecordID "0"
+   END DSRECORD
+   BEGIN DSRECORD
+      Identifier "V0S4P1"
+      OLEType "CCustomInput"
+      Readonly "0"
+      Name "DSLink2"
+      Partner "V0S1|V0S1P1"
+      LinkType "1"
+      MetaBag "CMetaProperty"
+      BEGIN DSSUBRECORD
+         Owner "APT"
+         Name "RTColumnProp"
+         Value "0"
+      END DSSUBRECORD
+      TransactionSize "0"
+      TXNBehaviour "0"
+      EnableTxGroup "0"
+      LinkMinimised "0"
+   END DSRECORD
+   BEGIN DSRECORD
+      Identifier "V0S4P2"
+      OLEType "CCustomOutput"
+      Readonly "0"
+      Name "DSLink5"
+      Partner "V0S0|V0S0P2"
+      Columns "COutputColumn"
+      BEGIN DSSUBRECORD
+         Name "Text"
+         SqlType "12"
+         Precision "12"
+         Scale "0"
+         Nullable "0"
+         KeyPosition "0"
+         DisplaySize "0"
+         Derivation "DSLink2.Text"
+         Group "0"
+         ParsedDerivation "DSLink2.Text"
+         SourceColumn "DSLink2.Text"
+         SortKey "0"
+         SortType "0"
+         AllowCRLF "0"
+         LevelNo "0"
+         Occurs "0"
+         PadNulls "0"
+         SignOption "0"
+         SortingOrder "0"
+         ArrayHandling "0"
+         SyncIndicator "0"
+         PadChar ""
+         APTFieldProp "alphabet='abcdefghij1234567890'"
+         ExtendedPrecision "0"
+         TaggedSubrec "0"
+         OccursVarying "0"
+         PKeyIsCaseless "0"
+         SCDPurpose "0"
+      END DSSUBRECORD
+      LeftTextPos "370"
+      TopTextPos "172"
+      LinkMinimised "0"
+   END DSRECORD
+END DSJOB

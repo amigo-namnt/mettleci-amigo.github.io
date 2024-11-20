@@ -1,0 +1,15 @@
+# Transmuter Transform Functions
+
+The functions from which [Transmuter Recipes](../mettleci-datastage-transmuters/transmuter-recipes.md) are built are described below:
+
+| **Transform Function** | **Description** | **Parameters** |
+| --- | --- | --- |
+| **AddJobParameter** | Adds a named parameter to one or more specified jobs | *   **parameterName:** The name of the parameter to add<br>    <br>*   **parameterType**: Any valid DataStage parameter type, such as `List`, `String`, `Encrypted` , `Boolean`, or `Number`<br>    <br>*   **parameterDisplay**: The prompt/help text to be displayed along with the value, or when collecting values<br>    <br>*   **parameterDefault**: The default value for the parameter, which must be valid for the parameter type. If the parameter type being added is of type `List` then the **parameterList** parameter must be used specify the allowable values of the list<br>    <br>*   **parameterList**: A list of values, one per line, preceded by a hyphen and space, for example:<br>    <br><br>```<br>-Disabled<br>-Test<br>-Intercept<br>``` |
+| **RemoveJobParameter** | Removes a named parameter from one or more specified jobs | *   **parameterName:** The name of the parameter to remove |
+| **AppendToAttribute** | Append a string value to an attribute. | *   **xpath:** Path to the attribute in the XML to modify<br>    <br>*   **appendString:** String to append to the current value of the attribute |
+| **PrependToAttribute** | Prepend a string value to an attribute. | *   **xpath:** Path to the attribute in the XML to modify<br>    <br>*   **prependString:** String to prepend to the current value of the attribute |
+| **SearchAndReplace** | Perform a regex search/replace on a text node (i.e. attribute or element with text content). If an element with child elements is provided by the xpath, the child elements will all be removed by this operation. | *   **xpath:** Path to the text node in the XML to apply search and replace<br>    <br>*   **searchString:** Regex search string<br>    <br>*   **replaceString:** Regex replace string |
+| **InsertElement** | Adds an XML element as a child to a specified parent element. | *   **xpath:** Path to the parent node. The provided element will be a child of this node<br>    <br>*   **element:** XML element to insert (as a string) |
+| **InsertAttribute** | Adds an attribute to an XML element. If the attribute already exists it will be overwritten. | *   **xpath:** Path to the element to add attribute to<br>    <br>*   **attributeName:** name of the attribute to add<br>    <br>*   **attributeValue:** value of the attribute to add |
+| **RemoveElement** | Removes an XML element from the document. | *   **xpath:** Path to the element to remove. |
+| **RemoveAttribute** | Removes an attribute from an existing element. | *   **xpath:** Path to the element the attribute is in.<br>    <br>*   **attributeName:** Name of the attribute to remove. |

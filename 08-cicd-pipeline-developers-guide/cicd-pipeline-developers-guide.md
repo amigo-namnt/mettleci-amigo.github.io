@@ -1,0 +1,15 @@
+# CI/CD Pipeline Developer's Guide
+
+*   [Repeatable DataStage Project Deployments](./cicd-pipeline-developers-guide/repeatable-datastage-project-deployments.md)
+*   [Pipeline Trigger Strategies](./cicd-pipeline-developers-guide/pipeline-trigger-strategies.md)
+*   [Enabling File System Deployment](./cicd-pipeline-developers-guide/enabling-file-system-deployment.md)
+*   [DataStage Feature Toggles](./cicd-pipeline-developers-guide/datastage-feature-toggles.md)
+*   [Deploying DataStage Binaries](./cicd-pipeline-developers-guide/deploying-datastage-binaries.md)
+*   [MettleCI Sample Pipelines](./cicd-pipeline-developers-guide/mettleci-sample-pipelines.md)
+*   [Parameter Management for Automated Deployment](./cicd-pipeline-developers-guide/parameter-management-for-automated-deployment.md)
+*   [How the DSParams file is managed in an Upgrade pipeline](./cicd-pipeline-developers-guide/how-the-dsparams-file-is-managed-in-an-upgrade-pipeline.md)
+*   [How JUnit test results are managed in a build pipeline](./cicd-pipeline-developers-guide/how-junit-test-results-are-managed-in-a-build-pipeline.md)
+*   [Understanding the mettleci unit test 'ignore-test-failures' command line option](./cicd-pipeline-developers-guide/understanding-the-mettleci-unit-test-ignore-test-failures-command-line-option.md)
+*   [Strategies for Managing .apt Files in MettleCI Pipelines](./cicd-pipeline-developers-guide/strategies-for-managing-apt-files-in-mettleci-pipelines.md)
+*   [Setting the Target DataStage Project Name](./cicd-pipeline-developers-guide/setting-the-target-datastage-project-name.md)
+*   [Using SSH Keys in MettleCI CI/CD Pipelines](./cicd-pipeline-developers-guide/using-ssh-keys-in-mettleci-cicd-pipelines.md)
